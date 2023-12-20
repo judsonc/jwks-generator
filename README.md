@@ -1,14 +1,20 @@
-# jwks-x5t-validator
-Simple x5t validator for JWK Set URL
+# jwks-generator
+Simple x5t validator for JWK Set URL and generator for certificate file.
 
 # Usage
+
+## Validate x5t from URL
+
+It checks if the x5t and x5t#S256 are validate.
 
 ```
 ./validate-x5t.sh [URL]
 ```
 
-# Docker usage
+## Generate JWK from file.crt
+
+It generates JWK file from a certificate file and prints the output.
 
 ```
-docker run --rm zuldigital/jwks-x5t-validator [URL]
+./generate-jwk.sh [FILE CERT]
 ```
