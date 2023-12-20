@@ -20,19 +20,19 @@ while IFS= read -r line; do
   #  3. "base64" -> base64 encode it
   #  4. "tr -d '='|tr '/+' '_-'" -> convert from base64 to base64url as demanded by RFC7515: https://tools.ietf.org/html/rfc7515#page-12
 
-  if [ "$x5t" != "null" ]; then
-    computed_x5t=`echo $x5c|base64 -d|openssl sha1 -binary|base64|tr -d '='|tr '/+' '_-'`
 
-    echo "  kid: $kid"
-    echo "  x5t: $x5t"
-    echo
-    if [ "$x5t" = "$computed_x5t" ]; then
-      echo "[SUCCESS] x5t matches computed x5t"
-    else
+  computed_x5t=`echo $x5c|base64 -d|openssl sha1 -binary|base64|tr -d '='|tr '/+' '_-'`
+
+  echo "  kid: $kid"
+  echo "  x5t: $x5t"
+  
+  echo
+  if [ "$x5t" = "$computed_x5t" ]; then
+    echo "[SUCCESS] x5t matches computed x5t"
+  else
     echo "[FAIL] => computed x5t: $computed_x5t"
-    fi
-    echo
   fi
+  echo
 
   # for each line compute x5t#S256 by following these steps:
   #  1. "echo $x5c|base64 -d" -> base64 decode x5c certificate
@@ -40,19 +40,17 @@ while IFS= read -r line; do
   #  3. "base64" -> base64 encode it
   #  4. "tr -d '='|tr '/+' '_-'" -> convert from base64 to base64url as demanded by RFC7515: https://tools.ietf.org/html/rfc7515#page-12
 
-  if [ "$x5tS256" != "null" ]; then
-    computed_x5tS256=`echo $x5c|base64 -d|openssl sha256 -binary|base64|tr -d '='|tr '/+' '_-'`
+  computed_x5tS256=`echo $x5c|base64 -d|openssl sha256 -binary|base64|tr -d '='|tr '/+' '_-'`
 
-    echo "  kid: $kid"
-    echo "  x5t#S256: $x5tS256"
-    echo
-    if [ "$x5tS256" = "$computed_x5tS256" ]; then
-      echo "[SUCCESS] x5t#S256 matches computed x5t#S256"
-    else
+  echo "  kid: $kid"
+  echo "  x5t#S256: $x5tS256"
+  echo
+  if [ "$x5tS256" = "$computed_x5tS256" ]; then
+    echo "[SUCCESS] x5t#S256 matches computed x5t#S256"
+  else
     echo "[FAIL] => computed x5t#S256: $computed_x5tS256"
-    fi
-    echo
   fi
+  echo
 
 
 done <<< "$list"
